@@ -15,7 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let interactor = MainInteractor(api: API.shared)
+        let repo = DefaultDataRepository.shared
+        repo.setSource(API.shared)
+        let interactor = MainInteractor(repo: repo)
         let presenter = MainPresenter()
         var view = MainView()
         presenter.view = view

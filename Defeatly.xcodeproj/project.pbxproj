@@ -17,6 +17,9 @@
 		BA0E9CAF2A9B69BD0057329F /* DatePickerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CAE2A9B69BD0057329F /* DatePickerWrapper.swift */; };
 		BA0E9CB32A9B82940057329F /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CB22A9B82940057329F /* CellView.swift */; };
 		BA0E9CB52A9B85C40057329F /* MainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CB42A9B85C40057329F /* MainModel.swift */; };
+		BA0E9CBD2A9BA1F00057329F /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CBC2A9BA1F00057329F /* DetailView.swift */; };
+		BA0E9CC62A9BA3750057329F /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CC52A9BA3750057329F /* DataRepository.swift */; };
+		BA0E9CC92A9BA5860057329F /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CC82A9BA5860057329F /* APIModel.swift */; };
 		BAAF3D592A9541750099AEA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF3D582A9541750099AEA9 /* AppDelegate.swift */; };
 		BAAF3D5B2A9541750099AEA9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF3D5A2A9541750099AEA9 /* SceneDelegate.swift */; };
 		BAAF3D622A9541760099AEA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAAF3D612A9541760099AEA9 /* Assets.xcassets */; };
@@ -38,6 +41,9 @@
 		BA0E9CAE2A9B69BD0057329F /* DatePickerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerWrapper.swift; sourceTree = "<group>"; };
 		BA0E9CB22A9B82940057329F /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		BA0E9CB42A9B85C40057329F /* MainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModel.swift; sourceTree = "<group>"; };
+		BA0E9CBC2A9BA1F00057329F /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		BA0E9CC52A9BA3750057329F /* DataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepository.swift; sourceTree = "<group>"; };
+		BA0E9CC82A9BA5860057329F /* APIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
 		BAAF3D552A9541750099AEA9 /* Defeatly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Defeatly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAAF3D582A9541750099AEA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAAF3D5A2A9541750099AEA9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -64,8 +70,6 @@
 		BA0E9C9A2A97EDDB0057329F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BA0E9C9E2A97F3230057329F /* APIPersonnel.swift */,
-				BA0E9CA02A97F6B50057329F /* APIEquipment.swift */,
 				BA0E9CB42A9B85C40057329F /* MainModel.swift */,
 			);
 			path = Models;
@@ -82,6 +86,7 @@
 		BA0E9CAC2A9813F40057329F /* APIService */ = {
 			isa = PBXGroup;
 			children = (
+				BA0E9CC72A9BA53F0057329F /* Models */,
 				BA0E9C962A97E3800057329F /* APIRequest.swift */,
 				BAAF3D722A9544020099AEA9 /* APIService.swift */,
 			);
@@ -94,6 +99,72 @@
 				BA0E9CAE2A9B69BD0057329F /* DatePickerWrapper.swift */,
 			);
 			path = DatePicker;
+			sourceTree = "<group>";
+		};
+		BA0E9CB62A9BA19A0057329F /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				BA0E9CB72A9BA1B90057329F /* ViewModels */,
+				BA0E9CBA2A9BA1D60057329F /* Presenters */,
+				BA0E9CB92A9BA1CB0057329F /* Interactors */,
+				BA0E9CB82A9BA1C20057329F /* Models */,
+				BA0E9CBB2A9BA1DC0057329F /* Views */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		BA0E9CB72A9BA1B90057329F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		BA0E9CB82A9BA1C20057329F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BA0E9CB92A9BA1CB0057329F /* Interactors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Interactors;
+			sourceTree = "<group>";
+		};
+		BA0E9CBA2A9BA1D60057329F /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Presenters;
+			sourceTree = "<group>";
+		};
+		BA0E9CBB2A9BA1DC0057329F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA0E9CBC2A9BA1F00057329F /* DetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BA0E9CBE2A9BA2900057329F /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				BA0E9CC52A9BA3750057329F /* DataRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		BA0E9CC72A9BA53F0057329F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BA0E9C9E2A97F3230057329F /* APIPersonnel.swift */,
+				BA0E9CA02A97F6B50057329F /* APIEquipment.swift */,
+				BA0E9CC82A9BA5860057329F /* APIModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		BAAF3D4C2A9541750099AEA9 = {
@@ -115,6 +186,7 @@
 		BAAF3D572A9541750099AEA9 /* Defeatly */ = {
 			isa = PBXGroup;
 			children = (
+				BA0E9CBE2A9BA2900057329F /* Repositories */,
 				BAAF3D7C2A954FC20099AEA9 /* Сommon */,
 				BAAF3D712A9542570099AEA9 /* Services */,
 				BAAF3D702A9542470099AEA9 /* Screens */,
@@ -154,6 +226,7 @@
 		BAAF3D702A9542470099AEA9 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				BA0E9CB62A9BA19A0057329F /* Detail */,
 				BAAF3D752A9546B90099AEA9 /* Main */,
 			);
 			path = Screens;
@@ -303,6 +376,7 @@
 			files = (
 				BA0E9CB52A9B85C40057329F /* MainModel.swift in Sources */,
 				BAAF3D592A9541750099AEA9 /* AppDelegate.swift in Sources */,
+				BA0E9CBD2A9BA1F00057329F /* DetailView.swift in Sources */,
 				BA0E9C972A97E3800057329F /* APIRequest.swift in Sources */,
 				BAAF3D7F2A954FD60099AEA9 /* View+cornerRadius.swift in Sources */,
 				BA0E9CAF2A9B69BD0057329F /* DatePickerWrapper.swift in Sources */,
@@ -315,7 +389,9 @@
 				BAAF3D732A9544020099AEA9 /* APIService.swift in Sources */,
 				BA0E9CB32A9B82940057329F /* CellView.swift in Sources */,
 				BA0E9CA52A980BD50057329F /* MainPresenter.swift in Sources */,
+				BA0E9CC62A9BA3750057329F /* DataRepository.swift in Sources */,
 				BAAF3D822A9550100099AEA9 /* RoundedCorner.swift in Sources */,
+				BA0E9CC92A9BA5860057329F /* APIModel.swift in Sources */,
 				BAAF3D5B2A9541750099AEA9 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

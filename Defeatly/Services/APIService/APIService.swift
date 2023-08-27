@@ -20,7 +20,7 @@ class API: APIService {
     static let shared = API()
     private init() {
         let configuration = URLSessionConfiguration.default
-        configuration.requestCachePolicy = .returnCacheDataElseLoad
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         session = URLSession(configuration: configuration)
     }
     

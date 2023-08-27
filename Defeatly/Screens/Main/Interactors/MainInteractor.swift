@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol MainBusinessLogic: AnyObject {
     func getLimits()
@@ -14,24 +15,12 @@ protocol MainBusinessLogic: AnyObject {
 
 class MainInteractor: MainBusinessLogic {
     var presenter: MainPresentationLogic?
-    var api: APIService
+    var repo: DataRepository
     
-    init(api: APIService) {
-        self.api = api
-        fetchPersonnelData()
-        fetchEquipmentData()
-    }
+    var store = Set<AnyCancellable>()
     
-    private var personnels = [APIPersonnel]() {
-        didSet {
-            getLimits(personnels)
-        }
-    }
-    
-    private var equipments = [APIEquipment]() {
-        didSet {
-            getLimits(equipments)
-        }
+    init(repo: DataRepository) {
+        self.repo = repo
     }
     
     let formatter: DateFormatter = {
@@ -42,30 +31,30 @@ class MainInteractor: MainBusinessLogic {
     }()
     
     func getLimits() {
-        getLimits(personnels)
-        getLimits(equipments)
-    }
-    
-    func getLimits(_ models: [Dateable]) {
-        guard
-            let first = models.first,
-            let last = models.last,
-            let firstDate = formatter.date(from: first.date),
-            let lastDate = formatter.date(from: last.date)
-        else { return }
-        presenter?.presentLimits(dates: (firstDate, lastDate))
+        repo.personnelsSubscribe { [ weak self ] _ in
+            if let limits = self?.repo.getLimits(.equipment) {
+                self?.presenter?.presentLimits(dates: limits)
+            }
+        }
+        .store(in: &store)
+        repo.equipmentsSubscribe { [ weak self ] _ in
+            if let limits = self?.repo.getLimits(.personnel) {
+                self?.presenter?.presentLimits(dates: limits)
+            }
+        }
+        .store(in: &store)
     }
     
     func getByDay(by day: Date, isPrevDay: Bool) {
         let dateString = formatter.string(from: day)
-        guard let personnel = personnels.first(where: { $0.date == dateString }),
-              let equipment = equipments.first(where: { $0.date == dateString }) else {
+        guard let personnel: APIPersonnel = repo.getByDateString(dateString: dateString),
+              let equipment: APIEquipment = repo.getByDateString(dateString: dateString) else {
             if !isPrevDay, let prevDay = Calendar.current.date(byAdding: .day, value: -1, to: day) {
                 getByDay(by: prevDay, isPrevDay: true)
             }
             return
         }
-        
+
         let model = MainModel(
             date: dateString,
             personnel: personnel.personnel,
@@ -93,27 +82,5 @@ class MainInteractor: MainBusinessLogic {
             presenter?.presentData(model: model)
         }
         
-    }
-    
-    private func fetchPersonnelData() {
-        api.fetchList(with: .personnel) { [weak self] (result: Result<[APIPersonnel], Error>) in
-            switch result {
-            case .success(let personnels):
-                self?.personnels = personnels
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    private func fetchEquipmentData() {
-        api.fetchList(with: .equipment) { [weak self] (result: Result<[APIEquipment], Error>) in
-            switch result {
-            case .success(let equipments):
-                self?.equipments = equipments
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
     }
 }
