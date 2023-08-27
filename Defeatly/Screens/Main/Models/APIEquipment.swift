@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct Equipment: Codable {
-    let date: String
-    let day, aircraft, helicopter, tank: Int
-    let apc, fieldArtillery, mrl: Int
-    let militaryAuto, fuelTank: Int?
-    let drone, navalShip, antiAircraftWarfare: Int
-    let specialEquipment, mobileSRBMSystem: Int?
-    let greatestLossesDirection: String?
-    let vehiclesAndFuelTanks, cruiseMissiles: Int?
+struct APIEquipment: Dateable {
+    var date: String
+    var day, aircraft, helicopter, tank: Int
+    var apc, fieldArtillery, mrl: Int
+    var militaryAuto, fuelTank: Int?
+    var drone, navalShip, antiAircraftWarfare: Int
+    var specialEquipment, mobileSRBMSystem: Int?
+    var greatestLossesDirection: String?
+    var vehiclesAndFuelTanks, cruiseMissiles: Int?
     
     enum CodingKeys: String, CodingKey {
         case date, day, aircraft, helicopter, tank

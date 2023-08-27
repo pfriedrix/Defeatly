@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct Personnel: Codable {
-    let date: String
-    let day, personnel: Int
-    let personnel_: String
-    let pow: Int?
+struct APIPersonnel: Dateable {
+    var date: String
+    var day, personnel: Int
+    var personnel_: String
+    var pow: Int?
     
     enum CodingKeys: String, CodingKey {
         case date, day, personnel

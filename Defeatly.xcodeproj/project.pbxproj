@@ -8,12 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		BA0E9C972A97E3800057329F /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9C962A97E3800057329F /* APIRequest.swift */; };
-		BA0E9C9F2A97F3230057329F /* Personnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9C9E2A97F3230057329F /* Personnel.swift */; };
-		BA0E9CA12A97F6B50057329F /* Equipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CA02A97F6B50057329F /* Equipment.swift */; };
+		BA0E9C9F2A97F3230057329F /* APIPersonnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9C9E2A97F3230057329F /* APIPersonnel.swift */; };
+		BA0E9CA12A97F6B50057329F /* APIEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CA02A97F6B50057329F /* APIEquipment.swift */; };
 		BA0E9CA32A980ABF0057329F /* MainInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CA22A980ABF0057329F /* MainInteractor.swift */; };
 		BA0E9CA52A980BD50057329F /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CA42A980BD50057329F /* MainPresenter.swift */; };
 		BA0E9CA72A980F080057329F /* MainView+MainDisplayLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CA62A980F080057329F /* MainView+MainDisplayLogic.swift */; };
 		BA0E9CAB2A9810F30057329F /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CAA2A9810F30057329F /* MainViewModel.swift */; };
+		BA0E9CAF2A9B69BD0057329F /* DatePickerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CAE2A9B69BD0057329F /* DatePickerWrapper.swift */; };
+		BA0E9CB32A9B82940057329F /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CB22A9B82940057329F /* CellView.swift */; };
+		BA0E9CB52A9B85C40057329F /* MainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E9CB42A9B85C40057329F /* MainModel.swift */; };
 		BAAF3D592A9541750099AEA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF3D582A9541750099AEA9 /* AppDelegate.swift */; };
 		BAAF3D5B2A9541750099AEA9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF3D5A2A9541750099AEA9 /* SceneDelegate.swift */; };
 		BAAF3D622A9541760099AEA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAAF3D612A9541760099AEA9 /* Assets.xcassets */; };
@@ -26,12 +29,15 @@
 
 /* Begin PBXFileReference section */
 		BA0E9C962A97E3800057329F /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
-		BA0E9C9E2A97F3230057329F /* Personnel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Personnel.swift; sourceTree = "<group>"; };
-		BA0E9CA02A97F6B50057329F /* Equipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
+		BA0E9C9E2A97F3230057329F /* APIPersonnel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonnel.swift; sourceTree = "<group>"; };
+		BA0E9CA02A97F6B50057329F /* APIEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEquipment.swift; sourceTree = "<group>"; };
 		BA0E9CA22A980ABF0057329F /* MainInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractor.swift; sourceTree = "<group>"; };
 		BA0E9CA42A980BD50057329F /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
 		BA0E9CA62A980F080057329F /* MainView+MainDisplayLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainView+MainDisplayLogic.swift"; sourceTree = "<group>"; };
 		BA0E9CAA2A9810F30057329F /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		BA0E9CAE2A9B69BD0057329F /* DatePickerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerWrapper.swift; sourceTree = "<group>"; };
+		BA0E9CB22A9B82940057329F /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		BA0E9CB42A9B85C40057329F /* MainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModel.swift; sourceTree = "<group>"; };
 		BAAF3D552A9541750099AEA9 /* Defeatly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Defeatly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAAF3D582A9541750099AEA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAAF3D5A2A9541750099AEA9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -58,8 +64,9 @@
 		BA0E9C9A2A97EDDB0057329F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BA0E9C9E2A97F3230057329F /* Personnel.swift */,
-				BA0E9CA02A97F6B50057329F /* Equipment.swift */,
+				BA0E9C9E2A97F3230057329F /* APIPersonnel.swift */,
+				BA0E9CA02A97F6B50057329F /* APIEquipment.swift */,
+				BA0E9CB42A9B85C40057329F /* MainModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -79,6 +86,14 @@
 				BAAF3D722A9544020099AEA9 /* APIService.swift */,
 			);
 			path = APIService;
+			sourceTree = "<group>";
+		};
+		BA0E9CAD2A9B69B00057329F /* DatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				BA0E9CAE2A9B69BD0057329F /* DatePickerWrapper.swift */,
+			);
+			path = DatePicker;
 			sourceTree = "<group>";
 		};
 		BAAF3D4C2A9541750099AEA9 = {
@@ -169,6 +184,7 @@
 			children = (
 				BAAF3D7A2A9546EF0099AEA9 /* MainView.swift */,
 				BA0E9CA62A980F080057329F /* MainView+MainDisplayLogic.swift */,
+				BA0E9CB22A9B82940057329F /* CellView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,6 +225,7 @@
 		BAAF3D802A9550010099AEA9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BA0E9CAD2A9B69B00057329F /* DatePicker */,
 				BAAF3D812A9550100099AEA9 /* RoundedCorner.swift */,
 			);
 			path = Views;
@@ -284,16 +301,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA0E9CB52A9B85C40057329F /* MainModel.swift in Sources */,
 				BAAF3D592A9541750099AEA9 /* AppDelegate.swift in Sources */,
 				BA0E9C972A97E3800057329F /* APIRequest.swift in Sources */,
 				BAAF3D7F2A954FD60099AEA9 /* View+cornerRadius.swift in Sources */,
+				BA0E9CAF2A9B69BD0057329F /* DatePickerWrapper.swift in Sources */,
 				BA0E9CA32A980ABF0057329F /* MainInteractor.swift in Sources */,
-				BA0E9C9F2A97F3230057329F /* Personnel.swift in Sources */,
+				BA0E9C9F2A97F3230057329F /* APIPersonnel.swift in Sources */,
 				BA0E9CAB2A9810F30057329F /* MainViewModel.swift in Sources */,
-				BA0E9CA12A97F6B50057329F /* Equipment.swift in Sources */,
+				BA0E9CA12A97F6B50057329F /* APIEquipment.swift in Sources */,
 				BA0E9CA72A980F080057329F /* MainView+MainDisplayLogic.swift in Sources */,
 				BAAF3D7B2A9546EF0099AEA9 /* MainView.swift in Sources */,
 				BAAF3D732A9544020099AEA9 /* APIService.swift in Sources */,
+				BA0E9CB32A9B82940057329F /* CellView.swift in Sources */,
 				BA0E9CA52A980BD50057329F /* MainPresenter.swift in Sources */,
 				BAAF3D822A9550100099AEA9 /* RoundedCorner.swift in Sources */,
 				BAAF3D5B2A9541750099AEA9 /* SceneDelegate.swift in Sources */,
@@ -440,7 +460,7 @@
 				INFOPLIST_FILE = Defeatly/App/Configs/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -471,7 +491,7 @@
 				INFOPLIST_FILE = Defeatly/App/Configs/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -8,100 +8,109 @@
 import SwiftUI
 
 struct MainView: View {
-    var interactor: MainBusinessLogin?
+    var interactor: MainBusinessLogic?
     
     @ObservedObject var viewModel = MainViewModel()
     @State var showDatePicker = false
     
     var body: some View {
         VStack(spacing: 0) {
+            header
             content
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .overlay(alignment: .top) {
-            header
-        }
-        .overlay(alignment: .top) {
-            datePicker
+        .background(
+            LinearGradient(colors: [.brown, .brown.opacity(0.8), .white], startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
+        )
+        .overlay {
+            DatePickerWrapper(showDatePicker: $showDatePicker, day: $viewModel.day, range: $viewModel.range)
+                .onChange(of: viewModel.day) { newDay in
+                    updateDay(by: newDay)
+                }
         }
         .onAppear {
-            interactor?.getLastDay()
+            interactor?.getLimits()
         }
+    }
+    
+    var content: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0) {
+                itemsView
+            }
+        }
+        .offset(y: viewModel.showContent ? 0 : 1000)
+        .animation(.easeOut(duration: 0.5), value: viewModel.showContent)
     }
     
     var header: some View {
         HStack {
             Button {
-                
+                if let prev = Calendar.current.date(byAdding: .day, value: -1, to: viewModel.day) {
+                    viewModel.day = prev
+                }
             } label: {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(.white)
+                    .foregroundColor(viewModel.model == nil ? .white.opacity(0.5) : .white)
                     .font(.system(size: 24, weight: .bold))
             }
+            .disabled(viewModel.model == nil)
+            
             Spacer()
-            Button {
-                showDatePicker.toggle()
-            } label: {
-                Text("10 day")
-                    .foregroundColor(.white)
-                    .font(.system(size: 24, weight: .bold))
+            
+            if let model = viewModel.model {
+                Button {
+                    showDatePicker.toggle()
+                } label: {
+                    Text("\(model.day) day")
+                        .foregroundColor(.white)
+                        .font(.system(size: 24, weight: .bold))
+                }
+                .buttonStyle(.plain)
             }
+            
             Spacer()
+            
             Button {
-                
+                if let next = Calendar.current.date(byAdding: .day, value: 1, to: viewModel.day) {
+                    viewModel.day = next
+                }
             } label: {
                 Image(systemName: "chevron.right")
-                    .foregroundColor(.white)
+                    .foregroundColor(viewModel.disableNextButton ? .white.opacity(0.5) : .white)
                     .font(.system(size: 24, weight: .bold))
             }
+            .disabled(viewModel.disableNextButton)
         }
         .padding(.horizontal)
         .padding(.bottom)
         .frame(minWidth: 0, maxWidth: .infinity)
-        .background {
+        .background(
             Color.brown
                 .opacity(0.85)
                 .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
                 .ignoresSafeArea()
-                .shadow(radius: 12)
-        }
-        .offset(y: viewModel.showHeader ? 0 : -100)
-        .animation(.easeOut(duration: 0.3), value: viewModel.showHeader)
+                .shadow(radius: 4)
+        )
+        .offset(y: viewModel.showContent ? 0 : -100)
+        .animation(.easeOut(duration: 0.3), value: viewModel.showContent)
     }
     
-    var content: some View {
-        VStack {
+    var itemsView: some View {
+        VStack(spacing: 0) {
+            ForEach(MainModel.CodingKeys.allCases, id: \.self) { type in
+                if let value = viewModel.getValue(by: type, viewModel.model) {
+                    CellView(name: type.rawValue, value: value, prev: viewModel.getValue(by: type, viewModel.prevModel))
+                }
+            }
         }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        .padding(.bottom)
+        .opacity(viewModel.showContent ? 1 : 0)
     }
     
-    var datePicker: some View {
-        DatePicker(selection: $viewModel.day, in: viewModel.range, displayedComponents: .date) { }
-            .datePickerStyle(.graphical)
-            .frame(width: 290)
-            .frame(maxHeight: 250)
-            .padding(.top)
-            .padding(.bottom, 24)
-            .padding(.horizontal, 12)
-            .background(.regularMaterial)
-            .cornerRadius(12)
-            .shadow(radius: 12)
-            .padding(.horizontal)
-            .tint(.red)
-            .scaleEffect(showDatePicker ? 1 : 0.1, anchor: .top)
-            .opacity(showDatePicker ? 1 : 0)
-            .offset(y: showDatePicker ? 60 : 30)
-            .animation(.spring().speed(2.0), value: showDatePicker)
+    private func updateDay(by day: Date) {
+        interactor?.getByDay(by: day, isPrevDay: false)
+        viewModel.prevModel = nil
     }
 }
-
-#if DEBUG
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-            .previewDevice("iPhone 14")
-        MainView()
-            .previewDevice("iPhone 8")
-    }
-}
-#endif

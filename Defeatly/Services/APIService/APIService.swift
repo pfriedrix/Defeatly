@@ -55,14 +55,14 @@ class API: APIService {
     }
     
     func testPersonnel() {
-        fetchList(with: .personnel) { (result: Result<[Personnel], Error>) in
+        fetchList(with: .personnel) { (result: Result<[APIPersonnel], Error>) in
             switch result {
             case .success(let personnels):
                 print(personnels.isEmpty ? "ERROR: NO PERSONNELS": "PERSONNELS TEST PASSED")
             case .failure(let error): print(error.localizedDescription)
             }
         }
-        fetchList(with: .personnel) { (result: Result<[Personnel], Error>) in
+        fetchList(with: .personnel) { (result: Result<[APIPersonnel], Error>) in
             switch result {
             case .success(let personnels):
                 print(personnels.isEmpty ? "ERROR: NO PERSONNELS": "PERSONNELS TEST PASSED")
@@ -72,7 +72,7 @@ class API: APIService {
     }
     
     func testEquipment() {
-        fetchList(with: .equipment) { (result: Result<[Equipment], Error>) in
+        fetchList(with: .equipment) { (result: Result<[APIEquipment], Error>) in
             switch result {
             case .success(let personnels):
                 print(personnels.isEmpty ? "ERROR: NO EQUIPMENTS": "EQUIPMENTS TEST PASSED")

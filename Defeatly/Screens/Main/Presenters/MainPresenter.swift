@@ -8,28 +8,23 @@
 import Foundation
 
 protocol MainPresentationLogic: AnyObject {
-    func presentPersonnel(personnel: Personnel)
-    func presentEquipment(equipment: Equipment)
-    func presentFirstAndLastDaysPersonnel(dates: (Date, Date))
-    func presentFirstAndLastDaysEquipment(dates: (Date, Date))
+    func presentData(model: MainModel)
+    func presentPrevData(model: MainModel)
+    func presentLimits(dates: (Date, Date))
 }
 
 class MainPresenter: MainPresentationLogic {
     var view: MainDisplayLogic?
-    
-    func presentPersonnel(personnel: Personnel) {
-        
+
+    func presentData(model: MainModel) {
+        view?.displayData(model: model)
     }
     
-    func presentEquipment(equipment: Equipment) {
-        
+    func presentPrevData(model: MainModel) {
+        view?.displayPrevData(model: model)
     }
     
-    func presentFirstAndLastDaysPersonnel(dates: (Date, Date)) {
-        view?.displayLimitPersonnel(dates)
-    }
-    
-    func presentFirstAndLastDaysEquipment(dates: (Date, Date)) {
-        view?.displayLimitEquipment(dates)
+    func presentLimits(dates: (Date, Date)) {
+        view?.displayLimits(dates)
     }
 }

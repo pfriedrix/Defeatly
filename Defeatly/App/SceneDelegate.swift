@@ -15,13 +15,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let api = API.shared
-        let interactor = MainInteractor()
+        let interactor = MainInteractor(api: API.shared)
         let presenter = MainPresenter()
         var view = MainView()
         presenter.view = view
         interactor.presenter = presenter
-        interactor.api = api
         view.interactor = interactor
         window?.rootViewController = UIHostingController(rootView: view)
         window?.makeKeyAndVisible()

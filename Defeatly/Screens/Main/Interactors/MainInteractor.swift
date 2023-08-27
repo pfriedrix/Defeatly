@@ -7,34 +7,30 @@
 
 import Foundation
 
-protocol MainBusinessLogin: AnyObject {
-    func getLastDay()
+protocol MainBusinessLogic: AnyObject {
+    func getLimits()
+    func getByDay(by day: Date, isPrevDay: Bool)
 }
 
-class MainInteractor: MainBusinessLogin {
+class MainInteractor: MainBusinessLogic {
     var presenter: MainPresentationLogic?
-    var api: APIService?
+    var api: APIService
     
-    private var personnels = [Personnel]() {
+    init(api: APIService) {
+        self.api = api
+        fetchPersonnelData()
+        fetchEquipmentData()
+    }
+    
+    private var personnels = [APIPersonnel]() {
         didSet {
-            guard let first = personnels.first,
-                  let last = personnels.last,
-                  let firstDate = formatter.date(from: first.date),
-                  let lastDate = formatter.date(from: last.date)
-            else { return }
-            print(first, firstDate, last, lastDate)
-            presenter?.presentFirstAndLastDaysPersonnel(dates: (firstDate, lastDate))
+            getLimits(personnels)
         }
     }
-    private var equipments = [Equipment]() {
+    
+    private var equipments = [APIEquipment]() {
         didSet {
-            guard let first = equipments.first,
-                  let last = equipments.last,
-                  let firstDate = formatter.date(from: first.date),
-                  let lastDate = formatter.date(from: last.date)
-            else { return }
-            print(first, firstDate, last, lastDate)
-            presenter?.presentFirstAndLastDaysEquipment(dates: (firstDate, lastDate))
+            getLimits(equipments)
         }
     }
     
@@ -45,34 +41,79 @@ class MainInteractor: MainBusinessLogin {
         return formatter
     }()
     
-    func getLastDay() {
-        getAllPersonnelDays { [ weak self ] result in
+    func getLimits() {
+        getLimits(personnels)
+        getLimits(equipments)
+    }
+    
+    func getLimits(_ models: [Dateable]) {
+        guard
+            let first = models.first,
+            let last = models.last,
+            let firstDate = formatter.date(from: first.date),
+            let lastDate = formatter.date(from: last.date)
+        else { return }
+        presenter?.presentLimits(dates: (firstDate, lastDate))
+    }
+    
+    func getByDay(by day: Date, isPrevDay: Bool) {
+        let dateString = formatter.string(from: day)
+        guard let personnel = personnels.first(where: { $0.date == dateString }),
+              let equipment = equipments.first(where: { $0.date == dateString }) else {
+            if !isPrevDay, let prevDay = Calendar.current.date(byAdding: .day, value: -1, to: day) {
+                getByDay(by: prevDay, isPrevDay: true)
+            }
+            return
+        }
+        
+        let model = MainModel(
+            date: dateString,
+            personnel: personnel.personnel,
+            day: personnel.day,
+            aircraft: equipment.aircraft,
+            helicopter: equipment.helicopter,
+            tank: equipment.tank,
+            apc: equipment.apc,
+            fieldArtillery: equipment.fieldArtillery,
+            mrl: equipment.mrl,
+            militaryAuto: equipment.militaryAuto,
+            fuelTank: equipment.fuelTank,
+            drone: equipment.antiAircraftWarfare,
+            navalShip: equipment.drone,
+            antiAircraftWarfare: equipment.navalShip,
+            specialEquipment: equipment.specialEquipment,
+            mobileSRBMSystem: equipment.mobileSRBMSystem,
+            vehiclesAndFuelTanks: equipment.vehiclesAndFuelTanks,
+            cruiseMissiles: equipment.cruiseMissiles
+        )
+        
+        if isPrevDay {
+            presenter?.presentPrevData(model: model)
+        } else {
+            presenter?.presentData(model: model)
+        }
+        
+    }
+    
+    private func fetchPersonnelData() {
+        api.fetchList(with: .personnel) { [weak self] (result: Result<[APIPersonnel], Error>) in
             switch result {
             case .success(let personnels):
                 self?.personnels = personnels
-                guard let last = personnels.last else { return }
-                self?.presenter?.presentPersonnel(personnel: last)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        
-        getAllEquipmentDays { [ weak self ] result in
-            switch result {
-            case .success(let equipments):
-                self?.equipments = equipments
-                guard let last = equipments.last else { return }
-                self?.presenter?.presentEquipment(equipment: last)
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
-    private func getAllPersonnelDays(completion: @escaping (Result<[Personnel], Error>) -> Void) {
-        api?.fetchList(with: .personnel, completion: completion)
-    }
-    private func getAllEquipmentDays(completion: @escaping (Result<[Equipment], Error>) -> Void) {
-        api?.fetchList(with: .equipment, completion: completion)
+    private func fetchEquipmentData() {
+        api.fetchList(with: .equipment) { [weak self] (result: Result<[APIEquipment], Error>) in
+            switch result {
+            case .success(let equipments):
+                self?.equipments = equipments
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }

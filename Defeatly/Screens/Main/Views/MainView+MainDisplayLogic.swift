@@ -8,35 +8,31 @@
 import Foundation
 
 protocol MainDisplayLogic {
-    func displayPersonnel(personnel: Personnel)
-    func displayEquipment(equipment: Equipment)
-    func displayLimitPersonnel(_ dates: (Date, Date))
-    func displayLimitEquipment(_ dates: (Date, Date))
+    func displayData(model: MainModel)
+    func displayPrevData(model: MainModel)
+    func displayLimits(_ dates: (Date, Date))
 }
 
 extension MainView: MainDisplayLogic {
-    func displayLimitPersonnel(_ dates: (Date, Date)) {
+    
+    func displayData(model: MainModel) {
+        DispatchQueue.main.async {
+            viewModel.model = model
+        }
+    }
+    
+    func displayPrevData(model: MainModel) {
+        DispatchQueue.main.async {
+            viewModel.prevModel = model
+        }
+    }
+    
+    func displayLimits(_ dates: (Date, Date)) {
         if let oldLimits = viewModel.limits {
             viewModel.limits?.0 = oldLimits.0 > dates.0 ? dates.0 : oldLimits.0
             viewModel.limits?.1 = oldLimits.1 < dates.1 ? dates.1 : oldLimits.1
         } else {
             viewModel.limits = dates
         }
-    }
-    
-    func displayLimitEquipment(_ dates: (Date, Date)) {
-        if let oldLimits = viewModel.limits {
-            viewModel.limits?.0 = oldLimits.0 > dates.0 ? dates.0 : oldLimits.0
-            viewModel.limits?.1 = oldLimits.1 < dates.1 ? dates.1 : oldLimits.1
-        } else {
-            viewModel.limits = dates
-        }
-    }
-    
-    func displayPersonnel(personnel: Personnel) {
-        
-    }
-    func displayEquipment(equipment: Equipment) {
-        
     }
 }
