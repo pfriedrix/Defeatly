@@ -14,20 +14,22 @@ struct MainView: View {
     @State var showDatePicker = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            content
-        }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .background(
-            LinearGradient(colors: [.brown, .brown.opacity(0.8), .white], startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
-        )
-        .overlay {
-            DatePickerWrapper(showDatePicker: $showDatePicker, day: $viewModel.day, range: $viewModel.range)
-                .onChange(of: viewModel.day) { newDay in
-                    updateDay(by: newDay)
-                }
+        NavigationView {
+            VStack(spacing: 0) {
+                header
+                content
+            }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .background(
+                Background()
+            )
+            .overlay {
+                DatePickerWrapper(showDatePicker: $showDatePicker, day: $viewModel.day, range: $viewModel.range)
+                    .onChange(of: viewModel.day) { newDay in
+                        updateDay(by: newDay)
+                    }
+            }
+            .navigationBarHidden(true)
         }
         .onAppear {
             interactor?.getLimits()
@@ -101,7 +103,16 @@ struct MainView: View {
         VStack(spacing: 0) {
             ForEach(MainModel.CodingKeys.allCases, id: \.self) { type in
                 if let value = viewModel.getValue(by: type, viewModel.model) {
-                    CellView(name: type.rawValue, value: value, prev: viewModel.getValue(by: type, viewModel.prevModel))
+                    if type == .personnel {
+                        CellView(name: type.rawValue, value: value, prev: viewModel.getValue(by: type, viewModel.prevModel))
+                    } else {
+                        NavigationLink {
+                            DetailView(type: type)
+                                .configure()
+                        } label: {
+                            CellView(name: type.rawValue, value: value, prev: viewModel.getValue(by: type, viewModel.prevModel))
+                        }
+                    }
                 }
             }
         }

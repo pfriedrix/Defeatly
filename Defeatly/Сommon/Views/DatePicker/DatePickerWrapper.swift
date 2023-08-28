@@ -31,9 +31,6 @@ struct DatePickerWrapper: View {
         DatePicker(selection: $day, in: range, displayedComponents: .date) { }
             .datePickerStyle(.graphical)
             .frame(width: 290)
-            .frame(maxHeight: 250)
-            .padding(.top)
-            .padding(.bottom, 24)
             .padding(.horizontal, 12)
             .background(.regularMaterial)
             .cornerRadius(12)

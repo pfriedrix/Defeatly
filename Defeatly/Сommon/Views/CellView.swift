@@ -11,10 +11,18 @@ struct CellView: View {
     let name: String
     let value: Int
     let prev: Int?
+    let iconName: String?
+    
+    init(name: String, value: Int, prev: Int? = nil, iconName: String? = nil) {
+        self.name = name
+        self.value = value
+        self.prev = prev
+        self.iconName = iconName
+    }
     
     var body: some View {
         HStack(spacing: 0) {
-            Image(name)
+            Image(iconName ?? name)
                 .renderingMode(.template)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -24,7 +32,7 @@ struct CellView: View {
                 .background(Circle().fill(.black.opacity(0.5)))
                 .padding(.vertical, 8)
             Text(name.uppercased())
-                .font(.subheadline)
+                .font(.footnote)
                 .bold()
                 .foregroundColor(.white)
                 .padding(.horizontal)
@@ -34,14 +42,11 @@ struct CellView: View {
                     .font(.title3)
                     .bold()
                     .foregroundColor(.white)
+                    .multilineTextAlignment(.leading)
                 if let prev = prev {
                     Text("+\(abs(value - prev))")
                         .font(.system(size: 12))
                         .foregroundColor(.black.opacity(0.3))
-                } else {
-                    // make personnel text jumping from none prev and prev
-                    Text("000")
-                        .opacity(0)
                 }
             }
         }

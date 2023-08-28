@@ -14,7 +14,8 @@ protocol DataRepository {
     func getByDateString<T: Dateable>(dateString: String) -> T?
     func personnelsSubscribe(_ subscriber: @escaping (Bool) -> Void) -> AnyCancellable
     func equipmentsSubscribe(_ subscriber: @escaping (Bool) -> Void) -> AnyCancellable
-    func modelsSubscribe(_ subscriber: @escaping (Bool) -> Void) -> AnyCancellable
+    var models: [MainModel] { get }
+    func getModelsByType(type: MainModel.CodingKeys) -> [EquipmentModel]
 }
 
 class DefaultDataRepository: DataRepository {
@@ -22,11 +23,39 @@ class DefaultDataRepository: DataRepository {
     
     @Published var isPersonnelsLoaded = false
     @Published var isEquipmentsLoaded = false
-    @Published var isModelsLoaded = false
     
     private var personnels = [APIPersonnel]()
     private var equipments = [APIEquipment]()
-    private var models = [APIModel]()
+    private var equipmentModels = [APIEquipmentModel]()
+    
+    var models: [MainModel] {
+        personnels.compactMap { personnel in
+            if let equipment = equipments.first(where: { $0.date == personnel.date }) {
+                return MainModel(
+                    date: personnel.date,
+                    personnel: personnel.personnel,
+                    day: personnel.day,
+                    aircraft: equipment.aircraft,
+                    helicopter: equipment.helicopter,
+                    tank: equipment.tank,
+                    apc: equipment.apc,
+                    fieldArtillery: equipment.fieldArtillery,
+                    mrl: equipment.mrl,
+                    militaryAuto: equipment.militaryAuto,
+                    fuelTank: equipment.fuelTank,
+                    drone: equipment.antiAircraftWarfare,
+                    navalShip: equipment.drone,
+                    antiAircraftWarfare: equipment.navalShip,
+                    specialEquipment: equipment.specialEquipment,
+                    mobileSRBMSystem: equipment.mobileSRBMSystem,
+                    vehiclesAndFuelTanks: equipment.vehiclesAndFuelTanks,
+                    cruiseMissiles: equipment.cruiseMissiles
+                )
+            } else {
+                return nil
+            }
+        }
+    }
     
     private var api: APIService? {
         didSet {
@@ -47,14 +76,9 @@ class DefaultDataRepository: DataRepository {
     }
     
     func getByDateString<T: Dateable>(dateString: String) -> T? {
-        if let equipment = equipments.first(where: { $0.date == dateString }) as? T {
-            return equipment
+        if let model = models.first(where: { $0.date == dateString }) as? T {
+            return model
         }
-        
-        if let personnel = personnels.first(where: { $0.date == dateString }) as? T {
-            return personnel
-        }
-        
         return nil
     }
     
@@ -70,9 +94,20 @@ class DefaultDataRepository: DataRepository {
         }
     }
     
-    func modelsSubscribe(_ subscriber: @escaping (Bool) -> Void) -> AnyCancellable {
-        return $isModelsLoaded.sink {
-            subscriber($0)
+    func getModelsByType(type: MainModel.CodingKeys) -> [EquipmentModel] {
+        equipmentModels.filter { model in
+            switch type {
+            case .drone: return model.equipmentUA == .unmannedAerialVehicles
+            case .mrl: return model.equipmentUA == .multipleRocketLaunchers
+            case .apc: return model.equipmentUA == .armouredPersonnelCarriers
+            case .antiAircraftWarfare: return model.equipmentUA == .antiAircraftWarfareSystems
+            case .fieldArtillery: return model.equipmentUA == .artillerySystems
+            case .navalShip: return model.equipmentUA == .warshipsBoats
+            case .vehiclesAndFuelTanks: return model.equipmentUA == .vehicleAndFuelTank
+            default: return model.equipmentUA.rawValue.lowercased().contains(type.rawValue.lowercased())
+            }
+        }.compactMap {
+            EquipmentModel(model: $0.model, total: $0.lossesTotal, type: type)
         }
     }
     
@@ -94,7 +129,6 @@ class DefaultDataRepository: DataRepository {
     private func fetchAll() {
         isPersonnelsLoaded = false
         isEquipmentsLoaded = false
-        isModelsLoaded = false
         
         fetchPersonnels { [ weak self ] result in
             guard let self = self else { return }
@@ -108,8 +142,7 @@ class DefaultDataRepository: DataRepository {
         }
         fetchModels { [ weak self ] result in
             guard let self = self else { return }
-            self.handleData(in: &self.models, by: result)
-            isModelsLoaded = true
+            self.handleData(in: &self.equipmentModels, by: result)
         }
     }
     
@@ -128,7 +161,7 @@ class DefaultDataRepository: DataRepository {
         api?.fetchList(with: .equipment, completion: completion)
     }
     
-    private func fetchModels(completion: @escaping (Result<[APIModel], Error>) -> Void) {
+    private func fetchModels(completion: @escaping (Result<[APIEquipmentModel], Error>) -> Void) {
         api?.fetchList(with: .oryx, completion: completion)
     }
 }
