@@ -8,7 +8,7 @@
 import Foundation
 
 class DetailViewModel: ObservableObject {
-    @Published var equipmentLosses = [EquipmentLosses]()
+    @Published var losses = [Loss]()
     @Published var totalValue: Int = 0
     @Published var equipmentModels = [EquipmentModel]()
     

@@ -18,17 +18,25 @@ struct DetailView: View {
     var body: some View {
         VStack(spacing: 0) {
             CellView(name: type.rawValue, value: viewModel.totalValue)
-            if #available(iOS 16.0, *) {
-                Chart(viewModel.equipmentLosses, id: \.date) { losses in
-                    
-                }
-                .frame(height: 200)
-                .padding(.horizontal)
-            }
-            if !viewModel.equipmentModels.isEmpty {
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 0) {
-                        Text("Models")
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 0) {
+                    if #available(iOS 16.0, *) {
+                        Chart(viewModel.losses, id: \.date) {
+                            LineMark(
+                                x: .value("Date", $0.date),
+                                y: .value("Losses", $0.value)
+                            )
+                            PointMark(
+                                x: .value("Date", $0.date),
+                                y: .value("Losses", $0.value)
+                            )
+                        }
+                        .frame(height: 200)
+                        .padding(.horizontal, 4)
+                        .padding(.top)
+                    }
+                    if !viewModel.equipmentModels.isEmpty {
+                        Text("Visual Confirmed Models")
                             .foregroundColor(.white)
                             .font(.headline)
                             .padding(.top)
@@ -38,9 +46,7 @@ struct DetailView: View {
                             CellView(name: $0.model , value: $0.total, iconName: type.rawValue)
                         }
                     }
-                }
-            } else {
-                Spacer()
+                }.padding(.horizontal)
             }
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
@@ -64,6 +70,7 @@ struct DetailView: View {
         .onAppear {
             interactor?.getTotalValue(type: type)
             interactor?.getModels(type: type)
+            interactor?.getLosses(type: type)
         }
     }
     

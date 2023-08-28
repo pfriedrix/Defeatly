@@ -102,16 +102,12 @@ struct MainView: View {
     var itemsView: some View {
         VStack(spacing: 0) {
             ForEach(MainModel.CodingKeys.allCases, id: \.self) { type in
-                if let value = viewModel.getValue(by: type, viewModel.model) {
-                    if type == .personnel {
-                        CellView(name: type.rawValue, value: value, prev: viewModel.getValue(by: type, viewModel.prevModel))
-                    } else {
-                        NavigationLink {
-                            DetailView(type: type)
-                                .configure()
-                        } label: {
-                            CellView(name: type.rawValue, value: value, prev: viewModel.getValue(by: type, viewModel.prevModel))
-                        }
+                if let value = viewModel.model?.getValue(with: type) {
+                    NavigationLink {
+                        DetailView(type: type)
+                            .configure()
+                    } label: {
+                        CellView(name: type.rawValue, value: value, prev: viewModel.prevModel?.getValue(with: type))
                     }
                 }
             }

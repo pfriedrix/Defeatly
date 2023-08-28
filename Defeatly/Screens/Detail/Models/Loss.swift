@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct EquipmentLosses: Dateable {
+struct Loss: Dateable {
     var date: String
     var value: Int
 }

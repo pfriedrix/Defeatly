@@ -43,9 +43,9 @@ class DefaultDataRepository: DataRepository {
                     mrl: equipment.mrl,
                     militaryAuto: equipment.militaryAuto,
                     fuelTank: equipment.fuelTank,
-                    drone: equipment.antiAircraftWarfare,
-                    navalShip: equipment.drone,
-                    antiAircraftWarfare: equipment.navalShip,
+                    drone: equipment.drone,
+                    navalShip: equipment.navalShip,
+                    antiAircraftWarfare: equipment.antiAircraftWarfare,
                     specialEquipment: equipment.specialEquipment,
                     mobileSRBMSystem: equipment.mobileSRBMSystem,
                     vehiclesAndFuelTanks: equipment.vehiclesAndFuelTanks,
@@ -104,6 +104,7 @@ class DefaultDataRepository: DataRepository {
             case .fieldArtillery: return model.equipmentUA == .artillerySystems
             case .navalShip: return model.equipmentUA == .warshipsBoats
             case .vehiclesAndFuelTanks: return model.equipmentUA == .vehicleAndFuelTank
+            case .personnel: return false
             default: return model.equipmentUA.rawValue.lowercased().contains(type.rawValue.lowercased())
             }
         }.compactMap {

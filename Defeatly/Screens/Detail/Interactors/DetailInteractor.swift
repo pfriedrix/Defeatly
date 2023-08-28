@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DetailBusinessLogic: AnyObject {
-    func getEquipmentLosses(type: MainModel.CodingKeys)
+    func getLosses(type: MainModel.CodingKeys)
     func getTotalValue(type: MainModel.CodingKeys)
     func getModels(type: MainModel.CodingKeys)
 }
@@ -31,9 +31,16 @@ class DetailInteractor: DetailBusinessLogic {
         presenter?.presentEquipmentModels(models: models)
     }
     
-    func getEquipmentLosses(type: MainModel.CodingKeys) {
-//        let losses = repo.equipments.compactMap {
-//            return EquipmentLosses(date: $0.date, value: $0[keyPath: ])
-//        }
+    func getLosses(type: MainModel.CodingKeys) {
+        let lastDays = repo.models.suffix(7).compactMap { model in
+            if let value = model.getValue(with: type), let prev = repo.models.first(where: {
+                $0.day == model.day - 1
+            })?.getValue(with: type) {
+                let diff = abs(value - prev)
+                return Loss(date: String(model.date.suffix(5)), value: diff)
+            }
+            return Loss(date: String(model.date.suffix(5)), value: 0)
+        }
+        presenter?.presentLosses(losses: lastDays)
     }
 }

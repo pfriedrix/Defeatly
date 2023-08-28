@@ -10,9 +10,14 @@ import Foundation
 protocol DetailDisplayLogic {
     func displayTotalValue(value: Int)
     func displayEquipmentModels(models: [EquipmentModel])
+    func displayLosses(losses: [Loss])
 }
 
 extension DetailView: DetailDisplayLogic {
+    func displayLosses(losses: [Loss]) {
+        viewModel.losses = losses
+    }
+    
     func displayTotalValue(value: Int) {
         viewModel.totalValue = value
     }
